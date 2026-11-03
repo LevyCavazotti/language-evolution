@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conlang Quest — Crie sua língua</title>
+<style>
+  :root {
+    --bg: #f4f5fb; --panel: #fff; --ink: #20233a; --muted: #68708a;
+    --accent: #6558d3; --accent2: #eeeaff; --line: #e4e6f0;
+    --good: #16845b; --gold: #f2b84b;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.5 system-ui, -apple-system, Segoe UI, sans-serif; color: var(--ink); background: var(--bg); }
+  header { background: linear-gradient(125deg, #26254e, #6558d3); color: white; padding: 28px 20px 32px; }
+  .wrap { max-width: 1080px; margin: auto; }
+  .brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:1.2rem; }
+  .brand-mark { display:grid; place-items:center; width:42px;height:42px;border-radius:13px;background:#ffffff25;font-size:1.35rem; }
+  header h1 { margin:22px 0 6px; font-size:clamp(1.8rem, 5vw, 2.6rem); line-height:1.15; }
+  header p { margin:0; color:#e4e2ff; max-width:650px; }
+  main { display:grid; grid-template-columns:270px minmax(0,1fr); gap:22px; padding:24px 20px 50px; }
+  aside, .content { min-width:0; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:0 5px 20px #24244a08; }
+  .progress-card { margin-bottom:16px; }
+  .small { color:var(--muted); font-size:.9rem; }
+  .progress-track { height:9px; background:#eeeff7; border-radius:99px; overflow:hidden; margin:12px 0 7px; }
+  .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#6558d3,#9c8df8); transition:width .25s; }
+  nav { display:grid; gap:8px; }
+  .level-btn { border:1px solid transparent; background:transparent; border-radius:12px; padding:12px; text-align:left; display:flex; gap:11px; align-items:center; cursor:pointer; color:var(--ink); font:inherit; }
+  .level-btn:hover { background:#fff; }
+  .level-btn.active { background:var(--accent2); border-color:#d8d1ff; color:#4235ad; }
+  .level-btn:disabled { opacity:.45; cursor:not-allowed; }
+  .level-num { display:grid; place-items:center; width:32px;height:32px; flex:0 0 32px; border-radius:10px; background:#eff0f7; font-weight:750; }
+  .active .level-num { background:var(--accent); color:white; }
+  .level-name { font-weight:650; }
+  .level-status { font-size:.76rem; color:var(--muted); }
+  h2 { margin:0 0 7px; font-size:1.55rem; }
+  h3 { margin:20px 0 8px; font-size:1.05rem; }
+  .eyebrow { color:var(--accent); text-transform:uppercase; letter-spacing:.09em; font-weight:800; font-size:.75rem; }
+  .intro { color:var(--muted); margin:0 0 18px; }
+  .lesson { background:#f8f7ff; border:1px solid #e7e2ff; padding:14px 16px; border-radius:13px; margin:16px 0; }
+  .lesson strong { display:block; margin-bottom:4px; }
+  .phonemes { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+  .phoneme { border:1px solid var(--line); border-radius:10px; background:white; padding:9px 12px; cursor:pointer; font:inherit; min-width:44px; }
+  .phoneme.selected { background:var(--accent2); border-color:var(--accent); color:#4438a8; font-weight:750; }
+  label { display:block; font-weight:650; margin:12px 0 6px; }
+  input, select, textarea { width:100%; border:1px solid #d9dce8; border-radius:10px; padding:10px 12px; background:white; color:var(--ink); font:inherit; }
+  input:focus, select:focus, textarea:focus { outline:3px solid #6558d326; border-color:var(--accent); }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .btn-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+  .btn { border:0; border-radius:11px; padding:11px 16px; background:var(--accent); color:white; font:inherit; font-weight:750; cursor:pointer; }
+  .btn:hover { filter:brightness(.96); }
+  .btn.secondary { background:#f0eff8; color:#48416e; }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+  .notice { padding:12px 14px; border-radius:12px; margin-top:14px; background:#eaf8f1; color:#146c4a; display:none; }
+  .notice.show { display:block; }
+  .word-list { display:grid; gap:8px; margin-top:12px; }
+  .word { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:10px 12px; border:1px solid var(--line); border-radius:10px; }
+  .word strong { font-size:1.05rem; }
+  .word button { border:0; background:transparent; color:#a04452; cursor:pointer; font-size:1.1rem; }
+  .tag { display:inline-block; border-radius:99px; background:#f0eff8; color:#5d5683; padding:3px 9px; font-size:.78rem; font-weight:700; }
+  .free-banner { border:1px solid #f2dfad; background:#fff9e9; padding:14px; border-radius:13px; margin:16px 0; }
+  .hidden { display:none !important; }
+  footer { text-align:center; color:var(--muted); padding:0 20px 28px; font-size:.85rem; }
+  @media(max-width:760px) { main { grid-template-columns:1fr; } nav { grid-template-columns:repeat(2,minmax(0,1fr)); } .level-btn { padding:9px; } .level-status { display:none; } }
+  @media(max-width:460px) { .grid2 { grid-template-columns:1fr; } nav { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="brand-mark">✦</span> Conlang Quest <span class="tag" style="background:#ffffff24;color:white">protótipo</span></div>
+    <h1>Crie uma língua que só existe na sua imaginação.</h1>
+    <p>Aprenda os fundamentos da criação de línguas com pequenas missões. Depois, invente sem limites.</p>
+  </div>
+</header>
+<main class="wrap">
+  <aside>
+    <section class="card progress-card">
+      <strong>Sua jornada</strong>
+      <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+      <div class="small" id="progressText">0 de 6 níveis concluídos</div>
+    </section>
+    <nav id="levelNav" aria-label="Níveis do jogo"></nav>
+    <button class="btn secondary" style="width:100%;margin-top:12px" id="resetBtn">Reiniciar jornada</button>
+  </aside>
+  <section class="content">
+    <div class="card" id="gamePanel"></div>
+  </section>
+</main>
+<footer>Conlang Quest · Protótipo local — seu progresso fica salvo neste navegador.</footer>
+<script>
+(() => {
+  const LEVELS = [
+    { title:"Os Sons", subtitle:"Escolha os sons que sua língua pode usar.", lesson:"Toda língua tem um conjunto de sons. Você não precisa usar todos os sons do português — pode escolher só alguns, ou inventar um conjunto diferente.", task:"Selecione pelo menos 5 sons para sua língua." },
+    { title:"Seu Alfabeto", subtitle:"Decida como cada som será escrito.", lesson:"Som e letra não são a mesma coisa. Um som pode ser escrito com uma letra, duas letras ou um símbolo inventado. Aqui você escolhe a aparência escrita de cada som.", task:"Personalize a escrita de pelo menos 5 sons escolhidos no nível anterior." },
+    { title:"As Palavras", subtitle:"Dê significado às primeiras palavras.", lesson:"Uma língua precisa de palavras para expressar ideias. Comece com conceitos simples. As palavras não precisam parecer com as do português.", task:"Crie 5 palavras para os conceitos sugeridos." },
+    { title:"A Ordem das Frases", subtitle:"Escolha como montar uma frase.", lesson:"As línguas organizam sujeito, verbo e objeto de maneiras diferentes. Em 'A pessoa vê a lua', pessoa é o sujeito, vê é o verbo e lua é o objeto.", task:"Escolha uma ordem e monte uma frase de exemplo." },
+    { title:"Pequenas Regras", subtitle:"Dê à sua língua um toque de gramática.", lesson:"Gramática é um conjunto de padrões. Por exemplo, você pode marcar o plural com uma partícula antes da palavra, ou indicar perguntas com uma palavra no começo.", task:"Escolha uma regra de plural e uma forma de fazer perguntas." },
+    { title:"Sua Primeira Conversa", subtitle:"Junte tudo e traduza uma frase.", lesson:"Você já tem sons, escrita, palavras e regras. Agora experimente combinar tudo. Uma tradução pode ser diferente do português — e isso é parte da diversão.", task:"Escreva uma frase na sua língua e conte o que ela significa." }
+  ];
+  const SOUND_SET = ["a","e","i","o","u","p","t","k","b","d","g","m","n","s","z","f","v","l","r","ʃ","ʒ","h","j","w","ŋ","ɲ"];
+  const CONCEPTS = ["sol","água","fogo","lua","eu","você","verbo: ver","casa","bom","comer"];
+  const defaults = {
+    level:0, completed:[], sounds:["a","i","u","m","n","k","t","s"],
+    letters:{}, words:{}, order:"SVO", plural:"sufixo", question:"partícula no início", sample:"mi kala", sampleMeaning:"Eu vejo a lua", free:false
+  };
+  let state = load();
+  let current = state.level || 0;
+  const $ = id => document.getElementById(id);
+  function load() {
+    try { return {...defaults, ...JSON.parse(localStorage.getItem("conlangQuestSave") || "{}")}; }
+    catch { return {...defaults}; }
+  }
+  function save() { localStorage.setItem("conlangQuestSave", JSON.stringify(state)); }
+  function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function renderNav() {
+    $("levelNav").innerHTML = LEVELS.map((l,i) => {
+      const done = state.completed.includes(i);
+      const locked = i > 0 && !state.completed.includes(i-1) && !state.free;
+      return `<button class="level-btn ${current===i?"active":""}" data-level="${i}" ${locked?"disabled":""}>
+        <span class="level-num">${done?"✓":i+1}</span><span><span class="level-name">${l.title}</span><br><span class="level-status">${done?"Concluído":locked?"Bloqueado":"Missão"}</span></span></button>`;
+    }).join("") + `<button class="level-btn ${current===6?"active":""}" data-level="6" ${state.completed.length<6&&!state.free?"disabled":""}><span class="level-num">∞</span><span><span class="level-name">Modo Livre</span><br><span class="level-status">${state.free?"Desbloqueado":"Após o nível 6"}</span></span></button>`;
+    document.querySelectorAll("[data-level]").forEach(b=>b.addEventListener("click",()=>{current=Number(b.dataset.level);render();}));
+    $("progress").style.width = (state.completed.length/6*100)+"%";
+    $("progressText").textContent = `${state.completed.length} de 6 níveis concluídos`;
+  }
+  function phonemeButtons() {
+    return SOUND_SET.map(s=>`<button type="button" class="phoneme ${state.sounds.includes(s)?"selected":""}" data-sound="${s}" aria-pressed="${state.sounds.includes(s)}">${s}</button>`).join("");
+  }
+  function render() {
+    renderNav();
+    const panel=$("gamePanel");
+    if(current===6) { renderFree(panel); return; }
+    const l=LEVELS[current];
+    let body="";
+    if(current===0) body=`<div class="phonemes">${phonemeButtons()}</div><p class="small">Selecionados: <strong>${state.sounds.length}</strong>. Clique para ativar ou remover um som.</p>`;
+    if(current===1) body=`<p class="small">Edite a forma escrita de cada som selecionado. Exemplo: /ʃ/ pode ser escrito como “sh”.</p><div class="word-list">${state.sounds.map(s=>`<div class="grid2"><div><label for="gr-${s}">Som /${escapeHTML(s)}/</label><input id="gr-${s}" data-grapheme="${escapeHTML(s)}" value="${escapeHTML(state.letters[s]||s)}" maxlength="8"></div><div style="display:flex;align-items:end;padding-bottom:3px"><span class="tag">Representação escrita</span></div></div>`).join("")}</div>`;
+    if(current===2) body=`<p class="small">Escreva suas próprias palavras. Pode usar letras ou combinações que você definiu.</p><div class="word-list">${CONCEPTS.slice(0,8).map(c=>`<div class="grid2"><div><label for="word-${c}">${c}</label><input id="word-${c}" data-concept="${escapeHTML(c)}" value="${escapeHTML(state.words[c]||"")}" placeholder="Sua palavra"></div><div style="display:flex;align-items:end;padding-bottom:3px"><span class="tag">${state.words[c]?"Criada":"Em branco"}</span></div></div>`).join("")}</div>`;
+    if(current===3) body=`<label for="order">Ordem básica da frase</label><select id="order"><option value="SVO">Sujeito – Verbo – Objeto (SVO)</option><option value="SOV">Sujeito – Objeto – Verbo (SOV)</option><option value="VSO">Verbo – Sujeito – Objeto (VSO)</option><option value="VOS">Verbo – Objeto – Sujeito (VOS)</option><option value="OSV">Objeto – Sujeito – Verbo (OSV)</option><option value="OVS">Objeto – Verbo – Sujeito (OVS)</option></select><label for="orderExample">Sua frase de exemplo</label><input id="orderExample" value="${escapeHTML(state.orderExample||"")}" placeholder="Escreva uma frase usando sua ordem"><p class="small">A ordem selecionada é uma regra geral — no modo livre, você pode criar exceções.</p>`;
+    if(current===4) body=`<div class="grid2"><div><label for="plural">Como marcar o plural?</label><select id="plural"><option value="sufixo">Adicionar algo no fim (ex.: -s)</option><option value="prefixo">Adicionar algo no começo (ex.: na-)</option><option value="palavra">Usar uma palavra separada</option><option value="none">Não marcar o plural</option><option value="custom">Criar minha própria regra</option></select></div><div><label for="question">Como fazer uma pergunta?</label><select id="question"><option value="partícula no início">Partícula no início</option><option value="partícula no fim">Partícula no fim</option><option value="entonação">Só mudar a entonação</option><option value="palavra interrogativa">Usar palavra interrogativa</option><option value="custom">Criar minha própria regra</option></select></div></div><label for="customRule">Detalhe opcional das regras</label><input id="customRule" value="${escapeHTML(state.customRule||"")}" placeholder="Ex.: plural é marcado com -en">`;
+    if(current===5) body=`<label for="sample">Sua frase na conlang</label><textarea id="sample" rows="2" placeholder="Escreva uma frase">${escapeHTML(state.sample||"")}</textarea><label for="sampleMeaning">O que ela significa?</label><input id="sampleMeaning" value="${escapeHTML(state.sampleMeaning||"")}" placeholder="Tradução ou significado"><div class="lesson"><strong>Desafio bônus</strong>Se quiser, tente traduzir “A lua vê o sol” ou invente uma frase totalmente sua.</div>`;
+    panel.innerHTML=`<div class="eyebrow">Nível ${current+1} de 6</div><h2>${l.title}</h2><p class="intro">${l.subtitle}</p><div class="lesson"><strong>Aprenda</strong>${l.lesson}<br><br><strong>Sua missão</strong>${l.task}</div>${body}<div class="notice" id="notice" role="status"></div><div class="btn-row"><button class="btn" id="completeBtn">${state.completed.includes(current)?"Nível concluído ✓":"Concluir missão"}</button>${current>0?'<button class="btn secondary" id="backBtn">Voltar</button>':""}</div>`;
+    if(current===0) document.querySelectorAll("[data-sound]").forEach(b=>b.addEventListener("click",()=>{const s=b.dataset.sound;state.sounds=state.sounds.includes(s)?state.sounds.filter(x=>x!==s):[...state.sounds,s];save();render();}));
+    if(current===1) document.querySelectorAll("[data-grapheme]").forEach(i=>i.addEventListener("input",()=>{state.letters[i.dataset.grapheme]=i.value;save();}));
+    if(current===2) document.querySelectorAll("[data-concept]").forEach(i=>i.addEventListener("input",()=>{state.words[i.dataset.concept]=i.value;save();}));
+    if(current===3) { $("order").value=state.order; $("order").addEventListener("change",e=>{state.order=e.target.value;save();}); $("orderExample").addEventListener("input",e=>{state.orderExample=e.target.value;save();}); }
+    if(current===4) { $("plural").value=state.plural; $("question").value=state.question; $("plural").addEventListener("change",e=>{state.plural=e.target.value;save();}); $("question").addEventListener("change",e=>{state.question=e.target.value;save();}); $("customRule").addEventListener("input",e=>{state.customRule=e.target.value;save();}); }
+    if(current===5) { $("sample").addEventListener("input",e=>{state.sample=e.target.value;save();}); $("sampleMeaning").addEventListener("input",e=>{state.sampleMeaning=e.target.value;save();}); }
+    $("completeBtn").addEventListener("click",completeLevel);
+    if($("backBtn")) $("backBtn").addEventListener("click",()=>{current--;render();});
+  }
+    function completeLevel() {
+    let valid=true, message="";
+    if(current===0 && state.sounds.length<5) {valid=false;message="Escolha pelo menos 5 sons antes de avançar.";}
+    if(current===1 && state.sounds.filter(s=>(state.letters[s]||s).trim()).length<5) {valid=false;message="Preencha a escrita de pelo menos 5 sons.";}
+    if(current===2 && Object.values(state.words).filter(v=>String(v).trim()).length<5) {valid=false;message="Crie pelo menos 5 palavras para concluir esta missão.";}
+    if(current===3 && !(state.orderExample||"").trim()) {valid=false;message="Escreva uma frase de exemplo para concluir.";}
+    if(current===5 && (!(state.sample||"").trim() || !(state.sampleMeaning||"").trim())) {valid=false;message="Preencha a frase e seu significado.";}
+    const notice=$("notice");
+    if(!valid){notice.textContent=message;notice.classList.add("show");return;}
+    if(!state.completed.includes(current)) state.completed.push(current);
+    state.completed.sort((a,b)=>a-b);
+    if(state.completed.length===6) state.free=true;
+    state.level=Math.min(current+1,6);
+    save();
+    if(current<5){current++;render();}
+    else {current=6;render();}
+  }
+  function renderFree(panel) {
+    panel.innerHTML=`<div class="eyebrow">Modo desbloqueado</div><h2>Modo Livre ✨</h2><p class="intro">Agora as regras são suas. Continue expandindo sua língua ou experimente algo completamente diferente.</p><div class="free-banner"><strong>Parabéns por concluir a jornada!</strong><br>O modo livre não exige missões. Use este espaço como um pequeno caderno para suas ideias.</div><h3>Seu idioma até agora</h3><p><span class="tag">${state.sounds.length} sons</span> <span class="tag">${Object.values(state.words).filter(Boolean).length} palavras</span> <span class="tag">Ordem ${escapeHTML(state.order)}</span></p><h3>Adicionar uma palavra</h3><div class="grid2"><div><label for="freeMeaning">Significado</label><input id="freeMeaning" placeholder="Ex.: estrela"></div><div><label for="freeWord">Palavra na sua língua</label><input id="freeWord" placeholder="Ex.: eluna"></div></div><div class="btn-row"><button class="btn" id="addFreeWord">Adicionar ao dicionário</button><button class="btn secondary" id="backLevels">Ver níveis</button></div><div id="freeNotice" class="notice" role="status"></div><h3>Dicionário</h3><div class="word-list" id="freeWords"></div>`;
+    const renderWords=()=>{$("freeWords").innerHTML=Object.entries(state.words).filter(([k,v])=>v&&k.startsWith("free:")).map(([k,v])=>`<div class="word"><span><strong>${escapeHTML(v)}</strong><br><span class="small">${escapeHTML(k.slice(5))}</span></span><button data-remove="${escapeHTML(k)}" aria-label="Remover palavra">×</button></div>`).join("")||'<p class="small">Seu dicionário livre está vazio por enquanto.</p>';document.querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>{delete state.words[b.dataset.remove];save();renderWords();}));};
+    renderWords();
+    $("addFreeWord").addEventListener("click",()=>{const meaning=$("freeMeaning").value.trim(),word=$("freeWord").value.trim();if(!meaning||!word){$("freeNotice").textContent="Preencha o significado e a palavra."; $("freeNotice").classList.add("show");return;}state.words["free:"+meaning]=word;save();$("freeMeaning").value="";$("freeWord").value="";$("freeNotice").textContent="Palavra adicionada ao dicionário!";$("freeNotice").classList.add("show");renderWords();});
+    $("backLevels").addEventListener("click",()=>{current=5;render();});
+  }
+  $("resetBtn").addEventListener("click",()=>{if(confirm("Quer reiniciar a jornada? Seu progresso e suas palavras serão apagados.")){state={...defaults, sounds:[...defaults.sounds],completed:[],letters:{},words:{}};current=0;save();render();}});
+  render();
+})();
+</script>
+</body>
+</html>
