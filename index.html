@@ -1,928 +1,161 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Conlang Quest — The Language Grimoire</title>
-
+<title>Conlang Quest — Edição Expandida</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
-
 <style>
-:root {
-  --paper:#e9d9b5;
-  --brown:#382719;
-  --gold:#b58a43;
-  --green:#40553b;
-}
-
-* { box-sizing:border-box; }
-
-body {
-  margin:0;
-  background:radial-gradient(ellipse at center,#59432e,#21170f);
-  color:var(--brown);
-  font-family:'Lora',serif;
-  min-height:100vh;
-}
-
-header {
-  text-align:center;
-  padding:35px 15px 25px;
-  color:#e3c77d;
-  background:linear-gradient(180deg,#21170f,#382719);
-  border-bottom:3px solid var(--gold);
-}
-
-header h1 {
-  font-family:'Cinzel',serif;
-  font-size:clamp(27px,5vw,43px);
-  margin:8px 0;
-  letter-spacing:3px;
-}
-
-header p {
-  color:#d5c29d;
-  font-style:italic;
-}
-
-.logo { font-size:35px; }
-
-.container {
-  max-width:1100px;
-  margin:25px auto;
-  padding:0 15px;
-  display:grid;
-  grid-template-columns:245px 1fr;
-  gap:20px;
-}
-
-.panel {
-  background:linear-gradient(135deg,#f3e5c5,#dfc99e);
-  border:3px double #9a7139;
-  border-radius:5px;
-  padding:20px;
-  box-shadow:0 8px 25px #0007;
-  position:relative;
-}
-
-.panel::before {
-  content:"";
-  position:absolute;
-  inset:5px;
-  border:1px solid #b18b50;
-  pointer-events:none;
-}
-
-h2,h3 { font-family:'Cinzel',serif; }
-
-h2 {
-  font-size:25px;
-  border-bottom:2px solid #b18b50;
-  padding-bottom:10px;
-}
-
-h3 { font-size:17px; }
-
-.subtitle {
-  color:#72583b;
-  font-style:italic;
-}
-
-nav {
-  display:grid;
-  gap:9px;
-}
-
-.nav-button {
-  background:linear-gradient(#74502f,#49301d);
-  color:#f4dfad;
-  border:2px solid #a98243;
-  padding:12px;
-  font-family:'Cinzel',serif;
-  cursor:pointer;
-  text-align:left;
-  border-radius:3px;
-  font-size:13px;
-}
-
-.nav-button:hover,
-.nav-button.active {
-  background:linear-gradient(#a17a40,#70502c);
-  color:white;
-}
-
-.nav-button:disabled {
-  opacity:.4;
-  cursor:not-allowed;
-}
-
-.progress {
-  height:10px;
-  background:#9e8966;
-  margin:12px 0;
-  border:1px solid #70502c;
-}
-
-.progress-fill {
-  height:100%;
-  width:0;
-  background:linear-gradient(90deg,#75834b,#c6a34e);
-  transition:width .3s;
-}
-
-button,input,select,textarea {
-  font-family:'Lora',serif;
-}
-
-.action {
-  background:linear-gradient(#80603b,#51351f);
-  border:2px solid #ae8747;
-  color:#f9e8bc;
-  padding:11px 17px;
-  cursor:pointer;
-  border-radius:3px;
-  font-weight:bold;
-}
-
-.action:hover {
-  background:linear-gradient(#a27a43,#74502c);
-}
-
-.secondary {
-  background:#e0cda6;
-  color:#49301d;
-}
-
-input,select,textarea {
-  width:100%;
-  padding:10px;
-  border:1px solid #9d7c4c;
-  background:#f8edcf;
-  color:#382719;
-  border-radius:3px;
-  font-size:15px;
-}
-
-label {
-  display:block;
-  margin:12px 0 5px;
-  font-weight:bold;
-}
-
-.lesson {
-  background:#e2d0a9;
-  border-left:4px solid #a17a40;
-  padding:15px;
-  margin:18px 0;
-  line-height:1.7;
-}
-
-.phonemes {
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
-  margin:18px 0;
-}
-
-.phoneme {
-  background:#f7eacb;
-  border:2px solid #a17a40;
-  color:#382719;
-  min-width:55px;
-  padding:10px;
-  cursor:pointer;
-  font-size:19px;
-  border-radius:3px;
-}
-
-.phoneme.selected {
-  background:#687348;
-  color:white;
-  border-color:#39472b;
-}
-
-.sound-row {
-  display:flex;
-  align-items:center;
-  gap:9px;
-  margin:8px 0;
-}
-
-.sound-info {
-  flex:1;
-  font-size:13px;
-}
-
-.audio-button {
-  background:#66502f;
-  color:white;
-  border:1px solid #bd9654;
-  padding:8px 12px;
-  cursor:pointer;
-}
-
-.word-list {
-  display:grid;
-  gap:10px;
-}
-
-.word {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:10px;
-  background:#f5e7c5;
-  border:1px solid #b18b50;
-  overflow-wrap:anywhere;
-}
-
-.notice {
-  padding:12px;
-  background:#dce4c5;
-  border:1px solid #72804e;
-  margin-top:15px;
-  display:none;
-}
-
-.notice.show { display:block; }
-
-.grid2 {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.tabs {
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-bottom:18px;
-}
-
-.tab {
-  padding:9px 13px;
-  background:#74502f;
-  color:#f4dfad;
-  border:1px solid #a98243;
-  cursor:pointer;
-}
-
-.tab.active {
-  background:#a17a40;
-  color:white;
-}
-
-.separator {
-  border:0;
-  border-top:1px solid #b18b50;
-  margin:18px 0;
-}
-
-.tag {
-  display:inline-block;
-  background:#687348;
-  color:white;
-  padding:4px 9px;
-  font-size:12px;
-  margin:3px;
-}
-
-footer {
-  text-align:center;
-  color:#d5c29d;
-  padding:25px;
-}
-
-@media(max-width:750px) {
-  .container { grid-template-columns:1fr; }
-  .grid2 { grid-template-columns:1fr; }
-}
+:root{--paper:#e9d9b5;--brown:#382719;--gold:#b58a43;--green:#40553b;--muted:#72583b}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at center,#59432e,#21170f);color:var(--brown);font-family:Lora,serif;min-height:100vh}
+header{text-align:center;padding:30px 15px 22px;color:#e3c77d;background:linear-gradient(180deg,#21170f,#382719);border-bottom:3px solid var(--gold)}
+header h1{font-family:Cinzel,serif;font-size:clamp(27px,5vw,43px);margin:8px 0;letter-spacing:3px}
+header p{color:#d5c29d;font-style:italic;margin-bottom:0}
+.logo{font-size:32px}
+.container{max-width:1150px;margin:25px auto;padding:0 15px;display:grid;grid-template-columns:245px 1fr;gap:20px}
+.panel{background:linear-gradient(135deg,#f3e5c5,#dfc99e);border:3px double #9a7139;border-radius:5px;padding:20px;box-shadow:0 8px 25px #0007;position:relative;min-width:0}
+.panel:before{content:"";position:absolute;inset:5px;border:1px solid #b18b50;pointer-events:none}
+.panel>*{position:relative}
+h2,h3{font-family:Cinzel,serif}h2{font-size:25px;border-bottom:2px solid #b18b50;padding-bottom:10px}h3{font-size:17px}
+.subtitle{color:var(--muted);font-style:italic}
+nav{display:grid;gap:8px}
+.nav-button{background:linear-gradient(#74502f,#49301d);color:#f4dfad;border:2px solid #a98243;padding:11px;font-family:Cinzel,serif;cursor:pointer;text-align:left;border-radius:3px;font-size:12px}
+.nav-button:hover,.nav-button.active{background:linear-gradient(#a17a40,#70502c);color:white}
+.nav-button:disabled{opacity:.4;cursor:not-allowed}
+.progress{height:10px;background:#9e8966;margin:12px 0;border:1px solid #70502c}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#75834b,#c6a34e);transition:width .3s}
+button,input,select,textarea{font-family:Lora,serif}
+.action{background:linear-gradient(#80603b,#51351f);border:2px solid #ae8747;color:#f9e8bc;padding:10px 15px;cursor:pointer;border-radius:3px;font-weight:bold;margin:4px 3px 4px 0}
+.action:hover{background:linear-gradient(#a27a43,#74502c)}.secondary{background:#e0cda6;color:#49301d}
+input,select,textarea{width:100%;padding:10px;border:1px solid #9d7c4c;background:#f8edcf;color:#382719;border-radius:3px;font-size:15px}
+label{display:block;margin:12px 0 5px;font-weight:bold}
+.lesson{background:#e2d0a9;border-left:4px solid #a17a40;padding:14px;margin:16px 0;line-height:1.65}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.phonemes{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.phoneme{background:#f7eacb;border:2px solid #a17a40;color:#382719;min-width:48px;padding:9px;cursor:pointer;font-size:18px;border-radius:3px}
+.phoneme.selected{background:#687348;color:white;border-color:#39472b}
+.word{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px;background:#f5e7c5;border:1px solid #b18b50;overflow-wrap:anywhere;margin:7px 0}
+.notice{padding:12px;background:#dce4c5;border:1px solid #72804e;margin-top:15px;display:none}.notice.show{display:block}
+.separator{border:0;border-top:1px solid #b18b50;margin:18px 0}
+.tag{display:inline-block;background:#687348;color:white;padding:4px 9px;font-size:12px;margin:3px}
+.small{font-size:13px;color:var(--muted);line-height:1.55}
+footer{text-align:center;color:#d5c29d;padding:25px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#f5e7c5;border:1px solid #b18b50;padding:12px;margin:8px 0}
+@media(max-width:750px){.container{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
-
-<header>
-  <div class="logo">✦ ⚜ ✦</div>
-  <h1>CONLANG QUEST</h1>
-  <p>The Language Grimoire — Crie sua própria língua</p>
-</header>
-
+<header><div class="logo">✦ ⚜ ✦</div><h1>CONLANG QUEST</h1><p>The Language Grimoire — Crie sua própria língua</p></header>
 <div class="container">
-
-<aside>
-  <div class="panel">
-    <h3>📜 Sua Jornada</h3>
-    <div class="progress">
-      <div class="progress-fill" id="progress"></div>
-    </div>
-    <small id="progressText">0 de 6 níveis</small>
-
-    <hr class="separator">
-
-    <nav id="navigation"></nav>
-
-    <hr class="separator">
-
-    <button class="action secondary" id="resetBtn">
-      Reiniciar jornada
-    </button>
-  </div>
-</aside>
-
+<aside><div class="panel">
+<h3>📜 Sua Jornada</h3><div class="progress"><div class="progress-fill" id="progress"></div></div>
+<small id="progressText">0 de 6 etapas</small><hr class="separator"><nav id="navigation"></nav>
+<hr class="separator"><button class="action secondary" id="exportBtn">Exportar projeto (.json)</button>
+<button class="action secondary" id="importBtn">Importar projeto</button><input type="file" id="importFile" accept=".json,application/json" hidden>
+<button class="action secondary" id="resetBtn">Reiniciar jornada</button>
+<p class="small">O progresso é salvo neste navegador. Exporte um backup para não depender apenas do armazenamento local.</p>
+</div></aside>
 <main class="panel" id="gamePanel"></main>
-
 </div>
-
-<footer>
-  ✦ Conlang Quest · The Language Grimoire ✦
-</footer>
-
+<footer>✦ Conlang Quest · The Language Grimoire ✦</footer>
 <script>
-
-const LEVELS = [
-  "Os Sons",
-  "O Alfabeto",
-  "As Palavras",
-  "Ordem das Frases",
-  "Gramática",
-  "Primeira Conversa"
-];
-
-const IPA = {
-  a:"Vogal aberta anterior não arredondada",
-  e:"Vogal média-fechada anterior não arredondada",
-  i:"Vogal fechada anterior não arredondada",
-  o:"Vogal média-fechada posterior arredondada",
-  u:"Vogal fechada posterior arredondada",
-  p:"Oclusiva bilabial surda",
-  b:"Oclusiva bilabial sonora",
-  t:"Oclusiva alveolar surda",
-  d:"Oclusiva alveolar sonora",
-  k:"Oclusiva velar surda",
-  g:"Oclusiva velar sonora",
-  m:"Nasal bilabial",
-  n:"Nasal alveolar",
-  s:"Fricativa alveolar surda",
-  z:"Fricativa alveolar sonora",
-  f:"Fricativa labiodental surda",
-  v:"Fricativa labiodental sonora",
-  l:"Aproximante lateral alveolar",
-  r:"Vibrante alveolar",
-  "ʃ":"Fricativa pós-alveolar surda",
-  "ʒ":"Fricativa pós-alveolar sonora",
-  h:"Fricativa glotal surda",
-  j:"Aproximante palatal",
-  w:"Aproximante labiovelar",
-  "ŋ":"Nasal velar",
-  "ɲ":"Nasal palatal"
+"use strict";
+const LEVELS=["Sons e fonemas","Escrita","Fonotática","Vocabulário e morfologia","Gramática","Frases e conversa"];
+const IPA={
+a:["Vogal aberta central/anteriorizada","Parecida com o a de pá."],
+e:["Vogal média-fechada anterior","Como o e de medo em muitas variedades."],
+ɛ:["Vogal média-aberta anterior","Como o é de pé."],
+i:["Vogal fechada anterior","Como o i de vida."],
+o:["Vogal média-fechada posterior","Como o primeiro o de ovo em muitas variedades."],
+ɔ:["Vogal média-aberta posterior","Como o ó de avó."],
+u:["Vogal fechada posterior","Como o u de uva."],
+p:["Oclusiva bilabial surda","Como p em pato."],
+b:["Oclusiva bilabial sonora","Como b em bola."],
+t:["Oclusiva alveolar surda","Como t em tatu."],
+d:["Oclusiva alveolar sonora","Como d em dado."],
+k:["Oclusiva velar surda","Como c em casa."],
+g:["Oclusiva velar sonora","Como g em gato."],
+m:["Nasal bilabial","Como m em mala."],
+n:["Nasal alveolar","Como n em nada."],
+ŋ:["Nasal velar","Como o som final de sing em inglês; não é fonema típico do português."],
+ɲ:["Nasal palatal","Como nh em ninho."],
+s:["Fricativa alveolar surda","Como s em sapo."],
+z:["Fricativa alveolar sonora","Como z em zebra."],
+f:["Fricativa labiodental surda","Como f em faca."],
+v:["Fricativa labiodental sonora","Como v em vaca."],
+ʃ:["Fricativa pós-alveolar surda","Como ch em chuva."],
+ʒ:["Fricativa pós-alveolar sonora","Como j em janela."],
+l:["Lateral alveolar","Como l em lua."],
+ɾ:["Vibrante simples alveolar","Como o r de caro em muitas variedades brasileiras."],
+r:["Vibrante múltipla alveolar","Como o rr de carro em variedades que usam esse som; não confundir com o r gutural de outras regiões."],
+h:["Fricativa glotal surda","Som aspirado, semelhante ao h do inglês."],
+j:["Aproximante palatal","Como o início de iate."],
+w:["Aproximante labiovelar","Como o início de uau."]
 };
+const DEFAULT={name:"Minha Língua",sounds:["a","i","u","m","n","k","t","s"],letters:{},words:{},completed:[],templates:["CV","CVC"],onsets:[],codas:[],prefix:"",suffix:"",pronouns:{eu:"",voce:"",ele:""},tense:"Partículas ou palavras separadas",negation:"Partícula antes do verbo",plural:"Sufixo",question:"Partícula no início",adjective:"Antes do substantivo",cases:"Sem marcação de caso",example:"",translation:"",freeWords:{},phrases:[]};
+let state=loadState(),current=0;
+const $=id=>document.getElementById(id);
+function loadState(){try{return {...DEFAULT,...JSON.parse(localStorage.getItem("conlangQuestSave")||"{}")}}catch{return structuredClone(DEFAULT)}}
+function save(){try{localStorage.setItem("conlangQuestSave",JSON.stringify(state))}catch(e){alert("Não foi possível salvar neste navegador. Exporte seu projeto como backup.")}}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function isVowel(s){return "aeɛiou".includes(s)}
+function consonants(){return state.sounds.filter(s=>!isVowel(s))}
+function vowels(){return state.sounds.filter(isVowel)}
+  function nav(){let html=LEVELS.map((n,i)=>`<button class="nav-button ${current===i?"active":""}" data-level="${i}" ${i>0&&!state.completed.includes(i-1)?"disabled":""}>${state.completed.includes(i)?"✓":"✦"} ${i+1}. ${n}</button>`).join("");
+html+=`<button class="nav-button ${current===6?"active":""}" data-level="6" ${state.completed.length<6?"disabled":""}>∞ Modo livre</button><button class="nav-button ${current===7?"active":""}" data-level="7">📖 Minha língua</button><button class="nav-button ${current===8?"active":""}" data-level="8">✒️ Criador de frases</button><button class="nav-button ${current===9?"active":""}" data-level="9">⚗️ Gerador de palavras</button>`;
+$("navigation").innerHTML=html;document.querySelectorAll("[data-level]").forEach(b=>b.onclick=()=>{current=+b.dataset.level;render()});$("progress").style.width=(state.completed.length/6*100)+"%";$("progressText").textContent=`${state.completed.length} de 6 etapas concluídas`}
 
-const DEFAULT = {
-  name:"Minha Língua",
-  sounds:["a","i","u","m","n","k","t","s"],
-  letters:{},
-  words:{},
-  completed:[],
-  order:"SVO",
-  plural:"Sufixo",
-  question:"Partícula no início",
-  example:"",
-  translation:"",
-  freeWords:{}
-};
+function soundPage(){return `<p>Selecione os fonemas da sua língua. Para começar, experimente um conjunto pequeno e depois amplie-o.</p><div class="phonemes">${Object.keys(IPA).map(s=>`<button class="phoneme ${state.sounds.includes(s)?"selected":""}" data-sound="${s}" title="${esc(IPA[s][0])}">${s}</button>`).join("")}</div><h3>Guia de pronúncia</h3><div class="grid">${state.sounds.map(s=>`<div class="card"><strong>/${s}/ — ${esc(IPA[s]?.[0]||"Som")}</strong><p class="small">${esc(IPA[s]?.[1]||"Som personalizado.")}</p></div>`).join("")||"<p>Selecione pelo menos alguns sons.</p>"}</div><p class="small">Nota: símbolos do IPA representam sons, não letras. A pronúncia pode variar entre dialetos; os exemplos são aproximações.</p>`}
 
-let state;
+function alphabetPage(){return `<p>Defina como cada fonema será representado na escrita. Um fonema pode usar mais de uma letra, e uma letra pode representar sons diferentes — mas tente manter as regras consistentes.</p>${state.sounds.map(s=>`<label>Fonema /${s}/</label><input data-letter="${s}" maxlength="12" value="${esc(state.letters[s]??s)}" placeholder="Ex.: sh, ch, x...">`).join("")}`}
 
-try {
-  state = {
-    ...DEFAULT,
-    ...JSON.parse(localStorage.getItem("conlangQuestSave") || "{}")
-  };
-} catch {
-  state = {...DEFAULT};
-}
+function phonotacticsPage(){let cs=consonants(),vs=vowels();return `<p>A fonotática define quais sequências de sons são permitidas. Escolha formatos de sílaba e restrições opcionais para o início e o fim.</p><div class="lesson"><strong>Como ler os modelos:</strong> C = consoante; V = vogal. CV produz sílabas como <em>ka</em>; CVC pode produzir <em>kan</em>; CCV permite grupos consonantais antes da vogal.</div><label>Modelos silábicos permitidos</label><div class="phonemes">${["V","CV","VC","CVC","CVV","CCV","CCVC","CVCV"].map(t=>`<button class="phoneme ${state.templates.includes(t)?"selected":""}" data-template="${t}">${t}</button>`).join("")}</div><div class="two"><div><label>Consoantes permitidas no início (opcional)</label><input id="onsets" value="${esc(state.onsets.join(" "))}" placeholder="Ex.: k t m s (vazio = todas)"><p class="small">Separe os símbolos por espaços.</p></div><div><label>Consoantes permitidas no final (opcional)</label><input id="codas" value="${esc(state.codas.join(" "))}" placeholder="Ex.: n s (vazio = todas)"><p class="small">Separe os símbolos por espaços.</p></div></div><p class="small">Consoantes disponíveis: ${cs.map(esc).join(" ")||"nenhuma"}<br>Vogais disponíveis: ${vs.map(esc).join(" ")||"nenhuma"}</p><button class="action" id="testSyllable">Testar uma sílaba</button><div id="syllableResult" class="card">Clique para testar suas regras.</div>`}
 
-state.letters ||= {};
-state.words ||= {};
-state.freeWords ||= {};
-state.completed ||= [];
-state.sounds ||= [...DEFAULT.sounds];
+function morphologyPage(){return `<p>Crie raízes e regras para formar palavras relacionadas. A morfologia estuda como partes menores se combinam e mudam de função ou significado.</p><div class="lesson"><strong>Exemplo:</strong> se <em>lum</em> significa “luz” e <em>-ar</em> significa “pessoa associada a”, uma palavra derivada poderia ser <em>lumar</em>. Você decide o significado e a regra.</div><div class="two"><div><label>Prefixo (opcional)</label><input id="prefix" value="${esc(state.prefix)}" placeholder="Ex.: na-"><p class="small">Explique o significado: por exemplo, “oposto de”.</p></div><div><label>Sufixo (opcional)</label><input id="suffix" value="${esc(state.suffix)}" placeholder="Ex.: -en"><p class="small">Explique o significado: por exemplo, “relacionado a”.</p></div></div><h3>Vocabulário básico</h3><div class="grid">${["sol","lua","água","fogo","eu","você","casa","ver"].map(c=>`<div><label>${c}</label><input data-word="${c}" value="${esc(state.words[c]||"")}" placeholder="Palavra na sua língua"></div>`).join("")}</div><hr class="separator"><h3>Experimente derivar uma palavra</h3><label>Raiz</label><input id="deriveRoot" placeholder="Digite uma palavra da sua língua"><label>Resultado</label><div id="derivedResult" class="card">O resultado aparecerá aqui.</div><button class="action" id="deriveBtn">Aplicar prefixo e sufixo</button>`}
 
-let current=0;
-let tab="overview";
+function grammarPage(){return `<p>Escolha regras para diferentes partes da gramática. Não existe uma única configuração correta: línguas naturais variam bastante.</p><div class="grid"><div><label>Ordem básica</label><select id="order">${["SVO","SOV","VSO","VOS","OSV","OVS"].map(x=>`<option ${state.order===x?"selected":""}>${x}</option>`).join("")}</select><p class="small">S = sujeito, V = verbo, O = objeto.</p></div><div><label>Plural</label><select id="plural">${["Sufixo","Prefixo","Palavra separada","Reduplicação","Sem plural","Regra própria"].map(x=>`<option ${state.plural===x?"selected":""}>${x}</option>`).join("")}</select></div><div><label>Perguntas</label><select id="question">${["Partícula no início","Partícula no fim","Entonação","Palavra interrogativa","Mudança na ordem","Regra própria"].map(x=>`<option ${state.question===x?"selected":""}>${x}</option>`).join("")}</select></div><div><label>Negação</label><select id="negation">${["Partícula antes do verbo","Partícula depois do verbo","Prefixo no verbo","Sufixo no verbo","Verbo auxiliar","Regra própria"].map(x=>`<option ${state.negation===x?"selected":""}>${x}</option>`).join("")}</select></div><div><label>Tempo verbal</label><select id="tense">${["Partículas ou palavras separadas","Prefixos","Sufixos","Mudança na raiz","Advérbios de tempo","Sem marcação obrigatória"].map(x=>`<option ${state.tense===x?"selected":""}>${x}</option>`).join("")}</select></div><div><label>Posição do adjetivo</label><select id="adjective">${["Antes do substantivo","Depois do substantivo","Livre","Concorda com o substantivo"].map(x=>`<option ${state.adjective===x?"selected":""}>${x}</option>`).join("")}</select></div><div><label>Casos gramaticais</label><select id="cases">${["Sem marcação de caso","Sufixos","Prefixos","Partículas separadas","Mudança de ordem","Sistema próprio"].map(x=>`<option ${state.cases===x?"selected":""}>${x}</option>`).join("")}</select></div></div><h3>Pronomes pessoais</h3><div class="grid">${[["eu","1ª pessoa singular"],["voce","2ª pessoa singular"],["ele","3ª pessoa singular"]].map(([k,l])=>`<div><label>${l}</label><input data-pronoun="${k}" value="${esc(state.pronouns[k]||"")}" placeholder="Pronome na sua língua"></div>`).join("")}</div><p class="small">Estas escolhas documentam suas regras; o jogo ainda não conjuga automaticamente verbos nem verifica concordância.</p>`}
 
-const $ = id => document.getElementById(id);
+function phrasePage(){return `<p>Use as palavras e regras que criou para escrever uma frase e sua tradução.</p><div class="lesson">Dica: comece com uma frase simples, como “Eu vejo a lua”. Depois, tente traduzi-la respeitando a ordem e as regras que você definiu.</div><label>Frase na sua língua</label><textarea id="example" rows="3">${esc(state.example)}</textarea><label>Tradução</label><input id="translation" value="${esc(state.translation)}" placeholder="O significado em português">`}
 
-function save() {
-  localStorage.setItem("conlangQuestSave",JSON.stringify(state));
-}
+function randomItem(a){return a[Math.floor(Math.random()*a.length)]}
+function generateSyllable(){let cs=consonants(),vs=vowels();if(!vs.length)throw Error("Selecione pelo menos uma vogal.");if(!cs.length)cs=[];let allowedOn=state.onsets.length?state.onsets.filter(x=>cs.includes(x)):cs;let allowedCo=state.codas.length?state.codas.filter(x=>cs.includes(x)):cs;let templates=state.templates.length?state.templates:["CV"];let pattern=randomItem(templates);let out="",firstC=true,lastC=false;for(const ch of pattern){if(ch==="C"){let pool=firstC?allowedOn:(lastC?allowedCo:cs);if(!pool.length)throw Error("Suas regras não têm consoantes disponíveis para esse modelo.");out+=randomItem(pool);firstC=false;lastC=true}else{out+=randomItem(vs);firstC=false;lastC=false}}return out}
+function generateWord(){let count=1+Math.floor(Math.random()*3),parts=[];for(let i=0;i<count;i++)parts.push(generateSyllable());return parts.join("")}
+function generatorPage(){return `<h2>⚗️ Gerador de palavras</h2><p class="subtitle">Gere sugestões usando os fonemas e modelos silábicos da sua língua.</p><div class="lesson">O gerador cria formas possíveis segundo as regras selecionadas. As sugestões não recebem significado automaticamente: escolha um significado e adicione as que gostar ao dicionário.</div><button class="action" id="generateOne">Gerar palavra</button><button class="action secondary" id="generateFive">Gerar cinco</button><div id="generated" class="card">Suas sugestões aparecerão aqui.</div><label>Significado da palavra escolhida</label><input id="generatedMeaning" placeholder="Ex.: montanha"><button class="action" id="saveGenerated">Adicionar ao dicionário</button>`}
 
-function esc(value) {
-  return String(value).replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",
-    '"':"&quot;","'":"&#39;"
-  })[c]);
-}
+function freePage(){return `<h2>∞ Modo Livre</h2><p class="subtitle">Experimente sem missões obrigatórias.</p><label>Significado</label><input id="freeMeaning" placeholder="Ex.: estrela"><label>Palavra na sua língua</label><input id="freeWord" placeholder="Ex.: eluna"><button class="action" id="addWord">Adicionar palavra</button><hr class="separator"><h3>Dicionário livre</h3><div id="freeDictionary"></div>`}
 
-function speak(symbol) {
-  if(!window.speechSynthesis) {
-    alert("Seu navegador não suporta síntese de voz.");
-    return;
-  }
+function summaryPage(){return `<h2>📖 ${esc(state.name)}</h2><label>Nome da sua língua</label><input id="languageName" value="${esc(state.name)}"><div class="card"><h3>Visão geral</h3><p>Etapas concluídas: ${state.completed.length}/6</p><p>Fonemas: ${state.sounds.map(esc).join(" ")}</p><p>Modelos silábicos: ${state.templates.map(esc).join(", ")||"não definidos"}</p><p>Palavras básicas: ${Object.values(state.words).filter(Boolean).length}</p><p>Palavras livres: ${Object.values(state.freeWords).filter(Boolean).length}</p><p>Frases guardadas: ${state.phrases.length}</p><p>Ordem: ${esc(state.order)} · Plural: ${esc(state.plural)} · Negação: ${esc(state.negation)}</p></div><h3>Inventário escrito</h3>${state.sounds.map(s=>`<div class="word"><strong>/${esc(s)}/</strong><span>${esc(state.letters[s]??s)}</span></div>`).join("")}<h3>Dicionário</h3>${Object.entries({...state.words,...state.freeWords}).filter(([k,v])=>v).map(([k,v])=>`<div class="word"><strong>${esc(k)}</strong><span>${esc(v)}</span></div>`).join("")||"Ainda vazio."}<h3>Frases</h3>${state.phrases.map(p=>`<div class="card"><strong>${esc(p.text)}</strong><p><em>${esc(p.translation)}</em></p></div>`).join("")||"Nenhuma frase guardada."}`}
+  function render(){nav();let p=$("gamePanel");if(current===7){p.innerHTML=summaryPage();$("languageName").oninput=e=>{state.name=e.target.value;save()};return}if(current===6){p.innerHTML=freePage();updateFree();$("addWord").onclick=addFreeWord;return}if(current===8){p.innerHTML=`<h2>✒️ Criador de frases</h2><label>Frase na sua língua</label><textarea id="phraseText" rows="3"></textarea><label>Tradução em português</label><textarea id="phraseTranslation" rows="2"></textarea><button class="action" id="savePhrase">Guardar frase</button><hr class="separator"><div id="phraseList"></div>`;updatePhrases();$("savePhrase").onclick=()=>{let t=$("phraseText").value.trim(),tr=$("phraseTranslation").value.trim();if(!t||!tr)return alert("Preencha a frase e a tradução.");state.phrases.push({text:t,translation:tr});save();render()};return}if(current===9){p.innerHTML=generatorPage();$("generateOne").onclick=()=>showGenerated(1);$("generateFive").onclick=()=>showGenerated(5);$("saveGenerated").onclick=saveGenerated;return}
+let pages=[soundPage,alphabetPage,phonotacticsPage,morphologyPage,grammarPage,phrasePage],titles=LEVELS,lessons=["Um inventário fonológico define os sons que distinguem palavras na sua língua.","A escrita representa os sons por meio de letras ou outros símbolos.","A fonotática define quais sequências de sons são possíveis.","Raízes, prefixos e sufixos ajudam a criar famílias de palavras.","A gramática organiza palavras em frases e expressa relações de significado.","Agora use seu sistema para criar uma frase traduzida."];
+p.innerHTML=`<small>✦ ETAPA ${current+1} DE 6 ✦</small><h2>${titles[current]}</h2><p class="subtitle">${lessons[current]}</p><div class="lesson">${["Selecione os sons que existirão na sua língua.","Associe cada som a uma representação escrita.","Defina como os sons podem se combinar em sílabas.","Crie vocabulário e experimente derivação.","Escolha regras para estruturar sua língua.","Combine suas escolhas em uma frase."][current]}</div>${pages[current]()}<div class="notice" id="notice"></div><hr class="separator"><button class="action" id="complete">${state.completed.includes(current)?"Etapa concluída ✓":"Concluir etapa →"}</button>`;
+bindCurrent()}
 
-  speechSynthesis.cancel();
+function bindCurrent(){document.querySelectorAll("[data-sound]").forEach(b=>b.onclick=()=>{let s=b.dataset.sound;state.sounds=state.sounds.includes(s)?state.sounds.filter(x=>x!==s):[...state.sounds,s];save();render()});document.querySelectorAll("[data-template]").forEach(b=>b.onclick=()=>{let t=b.dataset.template;state.templates=state.templates.includes(t)?state.templates.filter(x=>x!==t):[...state.templates,t];save();render()});document.querySelectorAll("[data-letter]").forEach(x=>x.oninput=()=>{state.letters[x.dataset.letter]=x.value;save()});document.querySelectorAll("[data-word]").forEach(x=>x.oninput=()=>{state.words[x.dataset.word]=x.value;save()});document.querySelectorAll("[data-pronoun]").forEach(x=>x.oninput=()=>{state.pronouns[x.dataset.pronoun]=x.value;save()});["order","plural","question","negation","tense","adjective","cases","example","translation","prefix","suffix"].forEach(id=>{let e=$(id);if(e)e.oninput=()=>{state[id]=e.value;save()}});if($("onsets"))$("onsets").onchange=e=>{state.onsets=e.target.value.trim().split(/\s+/).filter(Boolean);save()};if($("codas"))$("codas").onchange=e=>{state.codas=e.target.value.trim().split(/\s+/).filter(Boolean);save()};if($("testSyllable"))$("testSyllable").onclick=()=>{try{$("syllableResult").textContent="/"+generateSyllable()+"/"}catch(e){$("syllableResult").textContent=e.message}};if($("deriveBtn"))$("deriveBtn").onclick=()=>{let root=$("deriveRoot").value.trim();$("derivedResult").textContent=root?(state.prefix+root+state.suffix):"Digite uma raiz primeiro.";};$("complete").onclick=complete}
 
-  const utterance = new SpeechSynthesisUtterance(symbol);
-  utterance.lang="pt-BR";
-  utterance.rate=0.65;
+function complete(){let msg="";if(current===0&&state.sounds.length<3)msg="Escolha pelo menos 3 sons.";if(current===1&&state.sounds.filter(s=>(state.letters[s]??s).trim()).length<3)msg="Verifique pelo menos 3 representações.";if(current===2&&(!state.templates.length||!vowels().length))msg="Escolha ao menos um modelo silábico e mantenha uma vogal.";if(current===3&&Object.values(state.words).filter(x=>String(x).trim()).length<3)msg="Crie pelo menos 3 palavras.";if(current===5&&(!state.example.trim()||!state.translation.trim()))msg="Escreva uma frase e sua tradução.";if(msg){$("notice").textContent=msg;$("notice").classList.add("show");return}if(!state.completed.includes(current))state.completed.push(current);save();current=current<5?current+1:6;render()}
 
-  speechSynthesis.speak(utterance);
-}
+function updateFree(){$("freeDictionary").innerHTML=Object.entries(state.freeWords).map(([m,w])=>`<div class="word"><strong>${esc(m)}</strong><span>${esc(w)}</span></div>`).join("")||"Nenhuma palavra ainda."}
 
-function renderNavigation() {
-  let html=LEVELS.map((name,i)=>{
-    let locked=i>0 && !state.completed.includes(i-1);
+function addFreeWord(){let m=$("freeMeaning").value.trim(),w=$("freeWord").value.trim();if(!m||!w)return alert("Preencha os dois campos.");state.freeWords[m]=w;save();updateFree();$("freeMeaning").value="";$("freeWord").value=""}
 
-    return `
-      <button class="nav-button ${current===i?"active":""}"
-        data-level="${i}" ${locked?"disabled":""}>
-        ${state.completed.includes(i)?"✓":"✦"}
-        ${i+1}. ${name}
-      </button>`;
-  }).join("");
+function updatePhrases(){$("phraseList").innerHTML=state.phrases.map((p,i)=>`<div class="card"><strong>${esc(p.text)}</strong><p><em>${esc(p.translation)}</em></p><button class="action secondary" data-del="${i}">Excluir</button></div>`).join("")||"Nenhuma frase guardada.";document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{state.phrases.splice(+b.dataset.del,1);save();updatePhrases()})}
 
-  html+=`
-    <button class="nav-button ${current===6?"active":""}"
-      data-level="6" ${state.completed.length<6?"disabled":""}>
-      ∞ Modo Livre
-    </button>
+let generatedWords=[];
 
-    <button class="nav-button ${current===7?"active":""}"
-      data-level="7">
-      📖 Minha Língua
-    </button>`;
+function showGenerated(n){try{generatedWords=Array.from({length:n},()=>generateWord());$("generated").innerHTML=generatedWords.map((w,i)=>`<div class="word"><strong>${esc(w)}</strong><button class="action secondary" data-pick="${i}">Escolher</button></div>`).join("");document.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{$("generatedMeaning").dataset.word=generatedWords[+b.dataset.pick];$("generatedMeaning").placeholder="Significado para: "+generatedWords[+b.dataset.pick]})}catch(e){$("generated").textContent=e.message}}
 
-  $("navigation").innerHTML=html;
+function saveGenerated(){let meaning=$("generatedMeaning").value.trim(),word=$("generatedMeaning").dataset.word;if(!word||!meaning)return alert("Gere e escolha uma palavra, depois informe seu significado.");state.freeWords[meaning]=word;save();$("generated").textContent=`“${word}” foi adicionada ao dicionário como “${meaning}”.`;$("generatedMeaning").value="";delete $("generatedMeaning").dataset.word}
 
-  document.querySelectorAll("[data-level]").forEach(button=>{
-    button.onclick=()=>{
-      current=Number(button.dataset.level);
-      render();
-    };
-  });
+$("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(state.name||"minha-conlang").replace(/[^a-z0-9_-]/gi,"_")+".json";a.click();URL.revokeObjectURL(url)};
 
-  $("progress").style.width=
-    (state.completed.length/6*100)+"%";
+$("importBtn").onclick=()=>$("importFile").click();
 
-  $("progressText").textContent=
-    `${state.completed.length} de 6 níveis concluídos`;
-}
+$("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let data=JSON.parse(await f.text());if(!data||typeof data!=="object"||!Array.isArray(data.sounds))throw Error();state={...DEFAULT,...data};save();current=0;render();alert("Projeto importado!")}catch{alert("Arquivo inválido ou incompatível.")}e.target.value=""};
 
-function renderSounds() {
-  let sounds=Object.keys(IPA);
-
-  return `
-    <p>Escolha os sons que sua língua utilizará.
-    Clique nos símbolos para selecioná-los.</p>
-
-    <div class="phonemes">
-      ${sounds.map(s=>`
-        <button class="phoneme ${state.sounds.includes(s)?"selected":""}"
-          data-sound="${s}">
-          ${s}
-        </button>
-      `).join("")}
-    </div>
-
-    <h3>🔊 Ouvir os sons</h3>
-
-    <p class="subtitle">
-      Demonstrações aproximadas usando a voz do navegador.
-      A pronúncia pode variar.
-    </p>
-
-    <div id="soundList">
-      ${state.sounds.map(s=>`
-        <div class="sound-row">
-          <strong style="font-size:24px;width:40px">/${s}/</strong>
-          <div class="sound-info">${IPA[s]||"Som personalizado"}</div>
-          <button class="audio-button" data-audio="${s}">
-            ▶ Ouvir
-          </button>
-        </div>
-      `).join("")}
-    </div>
-
-    <p class="subtitle">
-      Sons selecionados: ${state.sounds.length}
-    </p>
-  `;
-}
-
-function renderAlphabet() {
-  return `
-    <p>Escolha como cada som será escrito.
-    Você pode utilizar letras, combinações ou símbolos especiais.</p>
-
-    ${state.sounds.map(s=>`
-      <label>Som /${s}/</label>
-      <input data-letter="${s}"
-        value="${esc(state.letters[s]||s)}"
-        maxlength="12"
-        placeholder="Representação escrita">
-    `).join("")}
-  `;
-}
-
-function renderWords() {
-  const concepts=[
-    "sol","lua","água","fogo",
-    "eu","você","casa","ver"
-  ];
-
-  return `
-    <p>Crie palavras para os conceitos abaixo.</p>
-
-    ${concepts.map(c=>`
-      <label>${c}</label>
-      <input data-word="${c}"
-        value="${esc(state.words[c]||"")}"
-        placeholder="Palavra na sua língua">
-    `).join("")}
-  `;
-}
-
-function renderGrammar() {
-  return `
-    <label>Ordem das palavras</label>
-    <select id="order">
-      ${["SVO","SOV","VSO","VOS","OSV","OVS"].map(o=>
-        `<option ${state.order===o?"selected":""}>${o}</option>`
-      ).join("")}
-    </select>
-
-    <label>Como funciona o plural?</label>
-    <select id="plural">
-      ${["Sufixo","Prefixo","Palavra separada","Sem plural","Regra própria"].map(o=>
-        `<option ${state.plural===o?"selected":""}>${o}</option>`
-      ).join("")}
-    </select>
-
-    <label>Como fazer perguntas?</label>
-    <select id="question">
-      ${["Partícula no início","Partícula no fim","Entonação","Palavra interrogativa","Regra própria"].map(o=>
-        `<option ${state.question===o?"selected":""}>${o}</option>`
-      ).join("")}
-    </select>
-  `;
-}
-
-function renderConversation() {
-  return `
-    <label>Frase na sua língua</label>
-    <textarea id="example" rows="3">${esc(state.example)}</textarea>
-
-    <label>Tradução</label>
-    <input id="translation" value="${esc(state.translation)}"
-      placeholder="O significado da frase">
-
-    <p class="subtitle">
-      Parabéns! Você está criando sua primeira frase.
-    </p>
-  `;
-}
-
-function renderSummary() {
-  return `
-    <h2>📖 ${esc(state.name)}</h2>
-
-    <label>Nome da sua língua</label>
-    <input id="languageName" value="${esc(state.name)}">
-
-    <div class="tabs">
-      <button class="tab active" data-tab="overview">Visão geral</button>
-      <button class="tab" data-tab="sounds">Sons</button>
-      <button class="tab" data-tab="alphabet">Alfabeto</button>
-      <button class="tab" data-tab="words">Dicionário</button>
-      <button class="tab" data-tab="grammar">Gramática</button>
-      <button class="tab" data-tab="phrases">Frases</button>
-    </div>
-
-    <div id="summaryContent"></div>
-  `;
-}
-
-function renderSummaryTab() {
-  let content=$("summaryContent");
-
-  if(tab==="overview") {
-    content.innerHTML=`
-      <h3>✨ Informações gerais</h3>
-      <p>Nome: <strong>${esc(state.name)}</strong></p>
-      <p>Níveis concluídos: ${state.completed.length}/6</p>
-      <p>Sons: ${state.sounds.length}</p>
-      <p>Palavras: ${
-        Object.values(state.words).filter(Boolean).length+
-        Object.values(state.freeWords).filter(Boolean).length
-      }</p>
-      <p>Ordem: ${esc(state.order)}</p>
-      <p>Plural: ${esc(state.plural)}</p>
-      <p>Perguntas: ${esc(state.question)}</p>
-    `;
-  }
-
-  if(tab==="sounds") {
-    content.innerHTML=`
-      <h3>Inventário de sons</h3>
-      ${state.sounds.map(s=>`<span class="tag">/${esc(s)}/</span>`).join("")}
-    `;
-  }
-
-  if(tab==="alphabet") {
-    content.innerHTML=`
-      <h3>Alfabeto</h3>
-      ${state.sounds.map(s=>`
-        <div class="word">
-          <strong>/${esc(s)}/</strong>
-          <span>${esc(state.letters[s]||s)}</span>
-        </div>
-      `).join("")}
-    `;
-  }
-
-  if(tab==="words") {
-    let words={...state.words,...state.freeWords};
-
-    content.innerHTML=`
-      <h3>Dicionário</h3>
-      ${Object.entries(words).filter(([k,v])=>v).map(([k,v])=>`
-        <div class="word">
-          <strong>${esc(k)}</strong>
-          <span>${esc(v)}</span>
-        </div>
-      `).join("")||"Seu dicionário ainda está vazio."}
-    `;
-  }
-
-  if(tab==="grammar") {
-    content.innerHTML=`
-      <h3>Regras gramaticais</h3>
-      <p>Ordem: ${esc(state.order)}</p>
-      <p>Plural: ${esc(state.plural)}</p>
-      <p>Perguntas: ${esc(state.question)}</p>
-    `;
-  }
-
-  if(tab==="phrases") {
-    content.innerHTML=`
-      <h3>Frases criadas</h3>
-      <p>${esc(state.example||"Nenhuma frase ainda.")}</p>
-      <p><em>${esc(state.translation)}</em></p>
-    `;
-  }
-}
-
-function renderFree() {
-  return `
-    <h2>✦ Modo Livre</h2>
-    <p class="subtitle">
-      Agora você é o mestre da sua própria língua!
-    </p>
-
-    <div class="lesson">
-      Não existem missões obrigatórias aqui.
-      Crie palavras, experimente sons e invente suas próprias regras.
-    </div>
-
-    <h3>Adicionar palavra</h3>
-
-    <label>Significado</label>
-    <input id="freeMeaning" placeholder="Ex.: estrela">
-
-    <label>Palavra na sua língua</label>
-    <input id="freeWord" placeholder="Ex.: eluna">
-
-    <button class="action" id="addWord">Adicionar</button>
-
-    <hr class="separator">
-
-    <h3>Seu dicionário</h3>
-    <div id="freeDictionary"></div>
-  `;
-}
-
-function updateFreeDictionary() {
-  $("freeDictionary").innerHTML=
-    Object.entries(state.freeWords).map(([meaning,word])=>`
-      <div class="word">
-        <strong>${esc(meaning)}</strong>
-        <span>${esc(word)}</span>
-      </div>
-    `).join("") || "Nenhuma palavra criada ainda.";
-}
-
-function render() {
-  renderNavigation();
-
-  let panel=$("gamePanel");
-
-  if(current===7) {
-    panel.innerHTML=renderSummary();
-    renderSummaryTab();
-
-    $("languageName").oninput=e=>{
-      state.name=e.target.value;
-      save();
-    };
-
-    document.querySelectorAll("[data-tab]").forEach(b=>{
-      b.onclick=()=>{
-        tab=b.dataset.tab;
-        document.querySelectorAll("[data-tab]").forEach(x=>
-          x.classList.toggle("active",x===b)
-        );
-        renderSummaryTab();
-      };
-    });
-
-    return;
-  }
-
-  if(current===6) {
-    panel.innerHTML=renderFree();
-    updateFreeDictionary();
-
-    $("addWord").onclick=()=>{
-      let meaning=$("freeMeaning").value.trim();
-      let word=$("freeWord").value.trim();
-
-      if(!meaning||!word) {
-        alert("Preencha os dois campos!");
-        return;
-      }
-
-      state.freeWords[meaning]=word;
-      save();
-      updateFreeDictionary();
-
-      $("freeMeaning").value="";
-      $("freeWord").value="";
-    };
-
-    return;
-  }
-
-  const bodies=[
-    renderSounds(),
-    renderAlphabet(),
-    renderWords(),
-    renderGrammar(),
-    renderGrammar(),
-    renderConversation()
-  ];
-
-  const descriptions=[
-    "Escolha os sons que existirão na sua língua.",
-    "Crie seu próprio sistema de escrita.",
-    "Comece a construir seu vocabulário.",
-    "Decida como as frases serão organizadas.",
-    "Crie as regras da sua gramática.",
-    "Combine tudo e crie uma frase."
-  ];
-
-  const lessons=[
-    "Toda língua possui sons. Escolha os que deseja utilizar.",
-    "Um som pode ter várias representações escritas. Seja criativo!",
-    "Invente palavras para os conceitos apresentados.",
-    "SVO significa Sujeito, Verbo e Objeto. Outras ordens também são possíveis.",
-    "As regras gramaticais dão estrutura à sua língua.",
-    "Escreva uma frase e sua tradução."
-  ];
-
-  panel.innerHTML=`
-    <small>✦ NÍVEL ${current+1} DE 6 ✦</small>
-    <h2>${LEVELS[current]}</h2>
-    <p class="subtitle">${descriptions[current]}</p>
-
-    <div class="lesson">${lessons[current]}</div>
-
-    ${bodies[current]}
-
-    <div class="notice" id="notice"></div>
-
-    <hr class="separator">
-
-    <button class="action" id="complete">
-      ${state.completed.includes(current)?"Concluído ✓":"Concluir nível →"}
-    </button>
-  `;
-
-  document.querySelectorAll("[data-sound]").forEach(b=>{
-    b.onclick=()=>{
-      const s=b.dataset.sound;
-
-      state.sounds=state.sounds.includes(s)
-        ?state.sounds.filter(x=>x!==s)
-        :[...state.sounds,s];
-
-      save();
-      render();
-    };
-  });
-
-  document.querySelectorAll("[data-audio]").forEach(b=>{
-    b.onclick=()=>speak(b.dataset.audio);
-  });
-
-  document.querySelectorAll("[data-letter]").forEach(input=>{
-    input.oninput=()=>{
-      state.letters[input.dataset.letter]=input.value;
-      save();
-    };
-  });
-
-  document.querySelectorAll("[data-word]").forEach(input=>{
-    input.oninput=()=>{
-      state.words[input.dataset.word]=input.value;
-      save();
-    };
-  });
-
-  ["order","plural","question","example","translation"].forEach(id=>{
-    const element=$(id);
-    if(element) {
-      element.oninput=()=>{
-        state[id]=element.value;
-        save();
-      };
-  }
-  });
-
-  $("complete").onclick=completeLevel;
-}
-
-function completeLevel() {
-  let valid=true;
-  let message="";
-
-  if(current===0 && state.sounds.length<5) {
-    valid=false;
-    message="Escolha pelo menos 5 sons.";
-  }
-
-  if(current===1 && state.sounds.filter(s=>
-    (state.letters[s]||s).trim()
-  ).length<5) {
-    valid=false;
-    message="Personalize pelo menos 5 sons.";
-  }
-
-  if(current===2 && Object.values(state.words).filter(v=>
-    String(v).trim()
-  ).length<5) {
-    valid=false;
-    message="Crie pelo menos 5 palavras.";
-  }
-
-  if(current===5 &&
-    (!state.example.trim()||!state.translation.trim())) {
-    valid=false;
-    message="Escreva uma frase e sua tradução.";
-  }
-
-  if(!valid) {
-    $("notice").textContent=message;
-    $("notice").classList.add("show");
-    return;
-  }
-
-  if(!state.completed.includes(current)) {
-    state.completed.push(current);
-  }
-
-  save();
-
-  if(current<5) {
-    current++;
-  } else {
-    current=6;
-  }
-
-  render();
-}
-
-$("resetBtn").onclick=()=>{
-  if(confirm("Deseja apagar seu progresso?")) {
-    localStorage.removeItem("conlangQuestSave");
-    location.reload();
-  }
-};
+$("resetBtn").onclick=()=>{if(confirm("Deseja apagar o progresso salvo neste navegador?")){localStorage.removeItem("conlangQuestSave");state=structuredClone(DEFAULT);current=0;render()}};
 
 render();
-
 </script>
 </body>
 </html>
